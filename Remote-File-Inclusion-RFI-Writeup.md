@@ -3,7 +3,7 @@
 This repository documents the exploitation of a Remote File Inclusion (RFI) vulnerability on the web server at `10.129.29.114` to achieve remote code execution (RCE) and locate a flag in a Capture The Flag (CTF) challenge.
 
 ## Overview
-The target web application at `http://10.129.29.114/index.php` has an RFI vulnerability in the `language` parameter, allowing inclusion of remote PHP scripts. By hosting a malicious PHP script on my machine (`10.10.14.179`), I executed commands and found the flag in `/exercise/flag.txt`.
+The target web application at `http://10.129.29.114/index.php` has an RFI vulnerability in the `language` parameter, allowing inclusion of remote PHP scripts. By hosting a malicious PHP script on my machine (`10.10.14.179`), I executed commands and found the flag in `/<directory_name>/flag.txt`.
 
 ## Prerequisites
 - A Linux machine with Python 3 and curl.
