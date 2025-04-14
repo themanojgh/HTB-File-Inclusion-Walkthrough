@@ -16,6 +16,9 @@ ffuf -w burp-parameter-names.txt -u http://83.136.252.66:33462/index.php?FUZZ=va
 
 `-fs 2309`: Filters results based on file size. This means ffuf will exclude any responses with a file size of 2309 bytes. The goal is to identify responses with different sizes, which might indicate a successful inclusion or a different behavior when a specific parameter is used.
 
+![image](https://github.com/user-attachments/assets/bb3e2df8-15a8-4b37-88e2-83cfbcfaefad)
+
+
 **Result**: view was identified as a potentially vulnerable parameter.
 
 ### Step 2: Path Fuzzing
@@ -31,8 +34,21 @@ ffuf -w LFI-Jhaddix.txt:FUZZ -u http://83.136.252.66:33462/index.php?view=FUZZ -
 
 **Result**: Several paths to `/etc/passwd` were found. This confirms the LFI vulnerability and indicates how many directory traversal levels are needed to reach the root directory.
 
+![image](https://github.com/user-attachments/assets/93a2551d-48ec-4ca7-ae78-88756480926e)
+
+
 ### Step 3: Manual Verification and Reading /etc/passwd
 **Purpose**: To manually confirm the LFI and understand how the file path is constructed
 ```url
 http://83.136.252.66:44551/index.php?view=../../../../../../../../../../../../../../../../../../../../../../etc/passwd
 ```
+You use the path identified by ffuf to read `/etc/passwd`. This step validates the LFI and provides information about the system.
+
+### Step 4: Reading /flag.txt
+**Purpose**: To exploit the LFI to read the target file.
+```url
+http://83.136.252.66:44551/index.php?view=../../../../../../../../../../../../../../../../../../../../../../flag.txt
+```
+
+### Conclusion
+You used ffuf to automate the process of finding both the vulnerable parameter and the correct path to exploit the LFI and then manually verified the vulnerability. By adjusting the path, you were able to read the contents of `/flag.txt`
