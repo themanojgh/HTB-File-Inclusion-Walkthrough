@@ -1,20 +1,22 @@
-![Screenshot 2025-04-16 135803](https://github.com/user-attachments/assets/dde0de45-973f-4f3c-8301-b7d73b09fb7f)![Screenshot 2025-04-16 135741](https://github.com/user-attachments/assets/b9490bf9-0290-4a9a-8486-b7449d237744)# Skill Assessment HTB File Inclusion Writeup
+# Skill Assessment HTB File Inclusion Writeup
 
-After completing all the learning materials in HTB from File Inclusion, now it's time for skill assessment.
+After completing the File Inclusion module on HTB Academy, I proceeded to the skill assessment. Below is a detailed walkthrough of my approach and findings.
 
-Let's start by typing the given target in browser. 
+## Target Reconnaissance
+I began by navigating to the provided target in my browser.
 
 ![Screenshot 2025-04-16 122158](https://github.com/user-attachments/assets/139d79ef-db19-4cb3-abb2-2b2773878a25)
 
-After analysing all the pages, i found out the `page` as a parameter. (Seen in the above figure)
+After reviewing the site, I identified the page parameter as a potential vector for file inclusion, as shown in the screenshot above.
 
-Opened that in burp suite and tried to get something out of that using `LFI-Jhaddix.txt`. Found out two different sizes of responses, one has invalid input and another has nothing interested. 
+## Parameter Testing and LFI Fuzzing
+Using Burp Suite, I intercepted requests and tested the page parameter with payloads from `LFI-Jhaddix.txt`. The responses indicated two distinct sizes: one for invalid input and another for less interesting content. 
 
 ![Screenshot 2025-04-16 123012](https://github.com/user-attachments/assets/d6a66a10-f594-43e9-8362-ae1e52765437)
 
-So, I moved to PHP wrappers. 
+## Exploring PHP Wrappers 
 
-Here, first I used `contact` as a first resource and when decoded, there was nothing interesting.
+Since direct LFI attempts yielded no valuable results, I pivoted to PHP wrappers. I first tried reading the contact resource using the php://filter wrapper and base64-decoded the output, but found nothing useful.
 
 ```bash
 php://filter/read=convert.base64-encode/resource=contact
